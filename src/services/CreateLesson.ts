@@ -1,0 +1,27 @@
+import { LessonsRepository } from "../repositories/LessonsRepository";
+
+interface CreateLessonRequest {
+  title: string;
+  description?: string;
+}
+
+// Command/Query Segregation
+// escrita/update/delete -> SEM RETORNO
+// Query -> traz retorno
+
+export class CreateLesson {
+  constructor(
+    private lessonsRepository: LessonsRepository,
+  ) {}
+
+  async execute({ title, description }: CreateLessonRequest) {
+    if (!title) {
+      throw new Error('Title is required')
+    }
+
+    await this.lessonsRepository.create({
+      title,
+      description
+    })
+  }
+}
